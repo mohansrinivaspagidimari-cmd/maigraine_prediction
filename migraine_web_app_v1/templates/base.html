@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Add your dataset · Migraine Prediction System{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('screening') }}">
+      <span class="brand-mark">M</span>
+      <span><b>Migraine Prediction System</b><small>Machine learning field project</small></span>
+    </a>
+    <nav class="nav">
+      {% if has_screening %}<a href="{{ url_for('screening') }}" class="{{ 'active' if nav == 'screening' }}">Check migraine</a>{% endif %}
+      {% if has_category %}<a href="{{ url_for('category') }}" class="{{ 'active' if nav == 'category' }}">Migraine category</a>{% endif %}
+      <a href="{{ url_for('models') }}" class="{{ 'active' if nav == 'models' }}">Model comparison</a>
+      <a href="{{ url_for('dataset') }}" class="{{ 'active' if nav == 'dataset' }}">Dataset</a>
+      <a href="{{ url_for('charts') }}" class="{{ 'active' if nav == 'charts' }}">Charts</a>
+    </nav>
+  </header>
+  {# rendered on its own (no page extends it), this shows the "add your dataset" page #}
+  <main>{% block content %}
+<section class="card setup">
+  <h2>Add your dataset</h2>
+  <p class="lead">No dataset has been trained yet. Add the dataset from your reference and the app builds
+    its form, models and charts from it.</p>
+  <ol>
+    <li>Save your reference dataset as a <b>CSV file</b> in the <code>data</code> folder of the project.
+      Any file name works.</li>
+    <li>Make sure it has a <code>Type</code> column with the known answer. Every other column is used as an
+      input: 0/1 or Yes/No columns become symptom buttons, number columns become sliders.</li>
+    <li>Run <code>python train.py</code>, then restart <code>python app.py</code> and reload this page.</li>
+  </ol>
+  <h3>Two types of dataset</h3>
+  <div class="two">
+    <div class="verdict">
+      <b>Category dataset</b>
+      <code>Type</code> holds the migraine category, e.g. “Typical aura with migraine”, “Migraine without
+      aura”. Trains step 2, and step 1 is built from it. Example: the Kaggle Migraine Symptom Classification dataset
+    </div>
+    <div class="verdict">
+      <b>Migraine or not dataset</b> (optional)
+      <code>Type</code> is Migraine / No migraine. If present, it trains step 1 instead.
+    </div>
+  </div>
+</section>
+{% endblock %}</main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,171 @@
+{# The Model comparison (page == "models") and Dataset (page == "dataset") pages. #}
+{% extends "base.html" %}
+{% set models_page = page == "models" %}
+{% set MODEL_COLORS = {"Decision Tree": "#f08c28", "Random Forest": "#2f6fe8", "SVM": "#d63a92"} %}
+{% set COLORS = ["#2f6fe8", "#d63a92", "#f08c28", "#1fa896", "#8a4fc0", "#e0b020", "#5a6b8c"] %}
+{% set TITLES = {"screening": "Stage 1 · Migraine or not", "category": "Stage 2 · Migraine category"} if models_page
+           else {"screening": "Stage 1 dataset · Migraine or not", "category": "Stage 2 dataset · Migraine category"} %}
+{% block title %}{{ {"models": "Model comparison", "dataset": "Dataset", "charts": "Charts"}[page] }} · Migraine Prediction System{% endblock %}
+{% block content %}
+{% if page == "charts" %}
+<div class="stack">
+  <div class="page-head">
+    <h1>Charts</h1>
+    <p>Charts drawn from the dataset and the trained models. Click a chart to open it full size.</p>
+  </div>
+  {% for name in files %}
+  <section class="card chart">
+    <a href="{{ url_for('chart_file', name=name) }}" target="_blank"><img src="{{ url_for('chart_file', name=name) }}" alt="{{ name }}"></a>
+  </section>
+  {% else %}
+  <section class="card"><p class="lead" style="margin:0">No charts yet. Run <code>python charts.py</code> and reload this page.</p></section>
+  {% endfor %}
+</div>
+{% else %}
+<div class="stack">
+  <div class="page-head">
+    {% if models_page %}
+    <h1>Model comparison</h1>
+    <p>Comparison of different machine learning models for migraine prediction.</p>
+    {% else %}
+    <h1>Dataset and preprocessing</h1>
+    <p>Each record is one patient with their symptoms and clinical information, plus the known migraine
+      class. The raw files are cleaned before training: duplicate records are removed, impossible ages
+      are dropped, and missing values are filled.<code>README.md</code>.</p>
+    {% endif %}
+  </div>
+
+  {% for task, m in metrics.items() %}
+  {% set p = m.preprocessing %}
+  <section class="card">
+    <h2>{{ TITLES[task] }}</h2>
+    {% if models_page %}
+    <p class="lead">Data: {{ m.source }} · {{ m.train_rows }} training records · {{ m.test_rows }} test records ·
+      classes: {{ m.labels | join(", ") }}</p>
+    {% if m.note %}<p class="lead">{{ m.note }}</p>{% endif %}
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1-score</th><th>{{ m.cv_folds }}-fold CV accuracy</th></tr></thead>
+        <tbody>
+        {% for name, r in m.results.items() %}
+          <tr class="{{ 'best' if name == m.best_model }}">
+            <td>{{ name }}{% if name == m.best_model %}<span class="tag">Best</span>{% endif %}</td>
+            <td>{{ '%.1f' % (r.accuracy * 100) }}%</td>
+            <td>{{ '%.1f' % (r.precision * 100) }}%</td>
+            <td>{{ '%.1f' % (r.recall * 100) }}%</td>
+            <td>{{ '%.1f' % (r.f1 * 100) }}%</td>
+            <td>{{ '%.1f' % (r.cv_mean * 100) }}% ± {{ '%.1f' % (r.cv_std * 100) }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="two" style="margin-top:26px">
+      <div>
+        <h3 style="margin-top:0">Scores by model</h3>
+        <div class="legend">
+          {% for name, color in MODEL_COLORS.items() %}<span><i style="background:{{ color }}"></i>{{ name }}</span>{% endfor %}
+        </div>
+        {% for metric, label in [("accuracy","Accuracy"),("precision","Precision"),("recall","Recall"),("f1","F1-score")] %}
+          <div style="margin-bottom:14px">
+            <div style="font-weight:500;margin-bottom:4px">{{ label }}</div>
+            {% for name, r in m.results.items() %}
+            <div class="hbar" style="margin:5px 0">
+              <span style="color:var(--muted)">{{ name }}</span>
+              <div class="bar"><i style="width:{{ r[metric] * 100 }}%;background:{{ MODEL_COLORS[name] }}"></i></div>
+              <span>{{ '%.1f' % (r[metric] * 100) }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div>
+        <h3 style="margin-top:0">Confusion matrix · {{ m.best_model }}</h3>
+        <p class="lead" style="margin:0 0 8px">Rows are the actual class, columns the predicted class.</p>
+        {% set cm = m.results[m.best_model].confusion_matrix %}
+        {% set peak = cm | map('max') | max %}
+        <div class="table-wrap">
+          <table class="cm">
+            <tr><th></th>{% for l in m.labels %}<th>{{ l }}</th>{% endfor %}</tr>
+            {% for row in cm %}
+            <tr>
+              <th class="row">{{ m.labels[loop.index0] }}</th>
+              {% for v in row %}
+              {% set a = (v / peak) %}
+              <td style="background:rgba(47,111,232,{{ '%.2f' % (0.08 + a * 0.85) }});color:{{ '#fff' if a > 0.5 else 'var(--ink)' }}">{{ v }}</td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+
+        <h3>Most important features</h3>
+        <p class="lead" style="margin:0 0 8px">Random Forest feature importance (feature selection step).</p>
+        {% set top = m.importance[0].rf %}
+        {% for f in m.importance %}
+        <div class="hbar">
+          <span>{{ labels[f.feature] }}</span>
+          <div class="bar"><i style="width:{{ f.rf / top * 100 }}%;background:var(--grad)"></i></div>
+          <span>{{ '%.3f' % f.rf }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <p class="lead">File: <code>data/{{ m.source }}</code>{% if m.note %} · {{ m.note }}{% endif %}</p>
+    {% if p.ignored_columns %}<p class="lead">Text columns not used as features: {{ p.ignored_columns | join(", ") }}</p>{% endif %}
+    {% if p.small_classes_removed %}<p class="lead">Types with fewer than 5 rows left out: {{ p.small_classes_removed | join(", ") }}</p>{% endif %}
+    <p class="lead">{{ m.features | length }} features: {% for f in m.features %}{{ labels[f] }}{{ ", " if not loop.last }}{% endfor %}</p>
+
+    <div class="stats">
+      <div class="stat"><small>Raw records</small><b>{{ p.raw_rows }}</b></div>
+      <div class="stat"><small>Duplicates removed</small><b>{{ p.duplicates_removed }}</b></div>
+      <div class="stat"><small>Invalid records removed</small><b>{{ p.invalid_removed }}</b></div>
+      <div class="stat"><small>Missing values filled</small><b>{{ p.missing_filled }}</b></div>
+    </div>
+
+    <div class="two" style="margin-top:26px">
+      <div>
+        <h3 style="margin-top:0">Class distribution ({{ p.clean_rows }} clean records)</h3>
+        {% set total = m.class_counts.values() | sum %}
+        {% for label, n in m.class_counts.items() %}
+        <div class="hbar">
+          <span>{{ label }}</span>
+          <div class="bar"><i style="width:{{ n / total * 100 }}%;background:{{ COLORS[loop.index0 % COLORS | length] }}"></i></div>
+          <span>{{ n }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      <div>
+        <h3 style="margin-top:0">Numeric features</h3>
+        <table>
+          <thead><tr><th>Feature</th><th>Min</th><th>Mean</th><th>Max</th></tr></thead>
+          <tbody>
+          {% for col, s in m.numeric_summary.items() %}
+            <tr><td>{{ labels[col] }}</td><td>{{ '%g' % s.min }}</td><td>{{ '%.1f' % s.mean }}</td><td>{{ '%g' % s.max }}</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3>Sample of cleaned records</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>{% for f in m.features %}<th>{{ f }}</th>{% endfor %}<th>Type</th></tr></thead>
+        <tbody>
+        {% for row in m.sample %}
+          <tr>{% for f in m.features %}<td>{{ '%g' % row[f] }}</td>{% endfor %}<td>{{ row.Type }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+  </section>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,1571 @@
+{
+  "screening": {
+    "source": "migraine_data.csv",
+    "note": "Built from the category dataset: Other, Typical aura without migraine counted as No migraine, all other types as Migraine.",
+    "features": [
+      "Age",
+      "Duration",
+      "Frequency",
+      "Location",
+      "Character",
+      "Intensity",
+      "Nausea",
+      "Vomit",
+      "Phonophobia",
+      "Photophobia",
+      "Visual",
+      "Sensory",
+      "Dysphasia",
+      "Dysarthria",
+      "Vertigo",
+      "Tinnitus",
+      "Hypoacusis",
+      "Diplopia",
+      "Defect",
+      "Ataxia",
+      "Conscience",
+      "Paresthesia",
+      "DPF"
+    ],
+    "inputs": [
+      {
+        "name": "Age",
+        "kind": "slider",
+        "min": 15.0,
+        "max": 77.0,
+        "step": 1,
+        "default": 28,
+        "scale": ""
+      },
+      {
+        "name": "Duration",
+        "kind": "slider",
+        "min": 1.0,
+        "max": 3.0,
+        "step": 1,
+        "default": 1,
+        "scale": ""
+      },
+      {
+        "name": "Frequency",
+        "kind": "slider",
+        "min": 1.0,
+        "max": 8.0,
+        "step": 1,
+        "default": 2,
+        "scale": ""
+      },
+      {
+        "name": "Location",
+        "kind": "slider",
+        "min": 0.0,
+        "max": 2.0,
+        "step": 1,
+        "default": 1,
+        "scale": "0 none \u00b7 1 one side \u00b7 2 both sides"
+      },
+      {
+        "name": "Character",
+        "kind": "slider",
+        "min": 0.0,
+        "max": 2.0,
+        "step": 1,
+        "default": 1,
+        "scale": "0 none \u00b7 1 throbbing \u00b7 2 constant"
+      },
+      {
+        "name": "Intensity",
+        "kind": "slider",
+        "min": 0.0,
+        "max": 3.0,
+        "step": 1,
+        "default": 3,
+        "scale": "0 none \u00b7 1 mild \u00b7 2 medium \u00b7 3 severe"
+      },
+      {
+        "name": "Visual",
+        "kind": "slider",
+        "min": 0.0,
+        "max": 4.0,
+        "step": 1,
+        "default": 2,
+        "scale": "number of visual symptoms"
+      },
+      {
+        "name": "Sensory",
+        "kind": "slider",
+        "min": 0.0,
+        "max": 2.0,
+        "step": 1,
+        "default": 0,
+        "scale": "number of sensory symptoms"
+      },
+      {
+        "name": "Nausea",
+        "kind": "chip"
+      },
+      {
+        "name": "Vomit",
+        "kind": "chip"
+      },
+      {
+        "name": "Phonophobia",
+        "kind": "chip"
+      },
+      {
+        "name": "Photophobia",
+        "kind": "chip"
+      },
+      {
+        "name": "Dysphasia",
+        "kind": "chip"
+      },
+      {
+        "name": "Dysarthria",
+        "kind": "chip"
+      },
+      {
+        "name": "Vertigo",
+        "kind": "chip"
+      },
+      {
+        "name": "Tinnitus",
+        "kind": "chip"
+      },
+      {
+        "name": "Hypoacusis",
+        "kind": "chip"
+      },
+      {
+        "name": "Diplopia",
+        "kind": "chip"
+      },
+      {
+        "name": "Defect",
+        "kind": "chip"
+      },
+      {
+        "name": "Ataxia",
+        "kind": "chip"
+      },
+      {
+        "name": "Conscience",
+        "kind": "chip"
+      },
+      {
+        "name": "Paresthesia",
+        "kind": "chip"
+      },
+      {
+        "name": "DPF",
+        "kind": "chip"
+      }
+    ],
+    "labels": [
+      "Migraine",
+      "No migraine"
+    ],
+    "best_model": "Random Forest",
+    "best_file": "screening_random_forest.joblib",
+    "results": {
+      "Decision Tree": {
+        "accuracy": 0.9493670886075949,
+        "precision": 0.8181818181818181,
+        "recall": 0.9722222222222222,
+        "f1": 0.8746031746031746,
+        "cv_mean": 0.9465757870821163,
+        "cv_std": 0.03822193880707685,
+        "confusion_matrix": [
+          [
+            68,
+            4
+          ],
+          [
+            0,
+            7
+          ]
+        ],
+        "per_class": {
+          "Migraine": {
+            "precision": 1.0,
+            "recall": 0.9444444444444444,
+            "f1-score": 0.9714285714285714,
+            "support": 72.0
+          },
+          "No migraine": {
+            "precision": 0.6363636363636364,
+            "recall": 1.0,
+            "f1-score": 0.7777777777777778,
+            "support": 7.0
+          }
+        }
+      },
+      "Random Forest": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "cv_mean": 0.9821811100292113,
+        "cv_std": 0.01728602362845483,
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            0,
+            7
+          ]
+        ],
+        "per_class": {
+          "Migraine": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 72.0
+          },
+          "No migraine": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 7.0
+          }
+        }
+      },
+      "SVM": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "cv_mean": 0.9566049983771503,
+        "cv_std": 0.05410840902498046,
+        "confusion_matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            0,
+            7
+          ]
+        ],
+        "per_class": {
+          "Migraine": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 72.0
+          },
+          "No migraine": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 7.0
+          }
+        }
+      }
+    },
+    "importance": [
+      {
+        "feature": "Location",
+        "rf": 0.20608655880356244,
+        "mi": 0.2190713859921405
+      },
+      {
+        "feature": "Character",
+        "rf": 0.20430193565367646,
+        "mi": 0.23514765603085008
+      },
+      {
+        "feature": "Intensity",
+        "rf": 0.12056932851144384,
+        "mi": 0.14711122574456237
+      },
+      {
+        "feature": "Visual",
+        "rf": 0.08971731076198537,
+        "mi": 0.05488293566313085
+      },
+      {
+        "feature": "Phonophobia",
+        "rf": 0.0837092242324823,
+        "mi": 0.06054438301639342
+      },
+      {
+        "feature": "Age",
+        "rf": 0.05378781060120018,
+        "mi": 0.01386291702426301
+      },
+      {
+        "feature": "Photophobia",
+        "rf": 0.05129412873309525,
+        "mi": 0.04624074562909497
+      },
+      {
+        "feature": "Nausea",
+        "rf": 0.044375636583894006,
+        "mi": 0.025659980932126736
+      },
+      {
+        "feature": "Vertigo",
+        "rf": 0.03674590420417683,
+        "mi": 0.012707498386051785
+      },
+      {
+        "feature": "Frequency",
+        "rf": 0.02842943466664152,
+        "mi": 0.01259242560524032
+      },
+      {
+        "feature": "Vomit",
+        "rf": 0.022336847770637585,
+        "mi": 0.0
+      },
+      {
+        "feature": "Duration",
+        "rf": 0.014068270508087502,
+        "mi": 0.0
+      },
+      {
+        "feature": "Sensory",
+        "rf": 0.013827926921115537,
+        "mi": 0.006310280417229697
+      },
+      {
+        "feature": "Tinnitus",
+        "rf": 0.012927283047862725,
+        "mi": 0.0
+      },
+      {
+        "feature": "DPF",
+        "rf": 0.011861472977504294,
+        "mi": 0.01947536938152372
+      },
+      {
+        "feature": "Dysphasia",
+        "rf": 0.0020145742612375393,
+        "mi": 0.0
+      },
+      {
+        "feature": "Paresthesia",
+        "rf": 0.0016788070730705388,
+        "mi": 0.0
+      },
+      {
+        "feature": "Defect",
+        "rf": 0.0009417902417785364,
+        "mi": 0.0
+      },
+      {
+        "feature": "Diplopia",
+        "rf": 0.0005520093906821728,
+        "mi": 0.0
+      },
+      {
+        "feature": "Hypoacusis",
+        "rf": 0.0003838749354527164,
+        "mi": 0.0
+      },
+      {
+        "feature": "Conscience",
+        "rf": 0.00031767489274796913,
+        "mi": 0.0
+      },
+      {
+        "feature": "Dysarthria",
+        "rf": 7.219522766480218e-05,
+        "mi": 0.0
+      },
+      {
+        "feature": "Ataxia",
+        "rf": 0.0,
+        "mi": 0.0
+      }
+    ],
+    "preprocessing": {
+      "raw_rows": 400,
+      "duplicates_removed": 6,
+      "invalid_removed": 0,
+      "missing_filled": 0,
+      "small_classes_removed": [],
+      "clean_rows": 394,
+      "ignored_columns": []
+    },
+    "cv_folds": 5,
+    "train_rows": 315,
+    "test_rows": 79,
+    "class_counts": {
+      "Migraine": 357,
+      "No migraine": 37
+    },
+    "numeric_summary": {
+      "Age": {
+        "min": 15.0,
+        "max": 77.0,
+        "mean": 31.695431472081218
+      },
+      "Duration": {
+        "min": 1.0,
+        "max": 3.0,
+        "mean": 1.619289340101523
+      },
+      "Frequency": {
+        "min": 1.0,
+        "max": 8.0,
+        "mean": 2.3654822335025383
+      },
+      "Location": {
+        "min": 0.0,
+        "max": 2.0,
+        "mean": 0.9720812182741116
+      },
+      "Character": {
+        "min": 0.0,
+        "max": 2.0,
+        "mean": 0.9771573604060914
+      },
+      "Intensity": {
+        "min": 0.0,
+        "max": 3.0,
+        "mean": 2.472081218274112
+      },
+      "Visual": {
+        "min": 0.0,
+        "max": 4.0,
+        "mean": 1.482233502538071
+      },
+      "Sensory": {
+        "min": 0.0,
+        "max": 2.0,
+        "mean": 0.30710659898477155
+      }
+    },
+    "sample": [
+      {
+        "Age": 30.0,
+        "Duration": 1.0,
+        "Frequency": 5.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 2.0,
+        "Nausea": 1.0,
+        "Vomit": 0.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 1.0,
+        "Sensory": 2.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 0.0,
+        "Tinnitus": 0.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 0.0,
+        "Type": "Migraine"
+      },
+      {
+        "Age": 50.0,
+        "Duration": 3.0,
+        "Frequency": 5.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 3.0,
+        "Nausea": 1.0,
+        "Vomit": 1.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 2.0,
+        "Sensory": 1.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 1.0,
+        "Tinnitus": 0.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 0.0,
+        "Type": "Migraine"
+      },
+      {
+        "Age": 53.0,
+        "Duration": 2.0,
+        "Frequency": 1.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 2.0,
+        "Nausea": 1.0,
+        "Vomit": 1.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 2.0,
+        "Sensory": 0.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 0.0,
+        "Tinnitus": 0.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 0.0,
+        "Type": "Migraine"
+      },
+      {
+        "Age": 45.0,
+        "Duration": 3.0,
+        "Frequency": 5.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 3.0,
+        "Nausea": 1.0,
+        "Vomit": 0.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 2.0,
+        "Sensory": 2.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 1.0,
+        "Tinnitus": 0.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 0.0,
+        "Type": "Migraine"
+      },
+      {
+        "Age": 53.0,
+        "Duration": 1.0,
+        "Frequency": 1.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 2.0,
+        "Nausea": 1.0,
+        "Vomit": 0.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 4.0,
+        "Sensory": 0.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 0.0,
+        "Tinnitus": 0.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 1.0,
+        "Type": "Migraine"
+      },
+      {
+        "Age": 49.0,
+        "Duration": 1.0,
+        "Frequency": 1.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 3.0,
+        "Nausea": 1.0,
+        "Vomit": 0.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 0.0,
+        "Sensory": 0.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 0.0,
+        "Tinnitus": 0.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 0.0,
+        "Type": "Migraine"
+      },
+      {
+        "Age": 27.0,
+        "Duration": 1.0,
+        "Frequency": 5.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 3.0,
+        "Nausea": 1.0,
+        "Vomit": 0.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 2.0,
+        "Sensory": 0.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 1.0,
+        "Tinnitus": 1.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 0.0,
+        "Type": "Migraine"
+      },
+      {
+        "Age": 24.0,
+        "Duration": 1.0,
+        "Frequency": 1.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 2.0,
+        "Nausea": 1.0,
+        "Vomit": 0.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 2.0,
+        "Sensory": 2.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 1.0,
+        "Tinnitus": 0.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 1.0,
+        "Type": "Migraine"
+      }
+    ]
+  },
+  "category": {
+    "source": "migraine_data.csv",
+    "note": "",
+    "features": [
+      "Age",
+      "Duration",
+      "Frequency",
+      "Location",
+      "Character",
+      "Intensity",
+      "Nausea",
+      "Vomit",
+      "Phonophobia",
+      "Photophobia",
+      "Visual",
+      "Sensory",
+      "Dysphasia",
+      "Dysarthria",
+      "Vertigo",
+      "Tinnitus",
+      "Hypoacusis",
+      "Diplopia",
+      "Defect",
+      "Ataxia",
+      "Conscience",
+      "Paresthesia",
+      "DPF"
+    ],
+    "inputs": [
+      {
+        "name": "Age",
+        "kind": "slider",
+        "min": 15.0,
+        "max": 77.0,
+        "step": 1,
+        "default": 28,
+        "scale": ""
+      },
+      {
+        "name": "Duration",
+        "kind": "slider",
+        "min": 1.0,
+        "max": 3.0,
+        "step": 1,
+        "default": 1,
+        "scale": ""
+      },
+      {
+        "name": "Frequency",
+        "kind": "slider",
+        "min": 1.0,
+        "max": 8.0,
+        "step": 1,
+        "default": 2,
+        "scale": ""
+      },
+      {
+        "name": "Location",
+        "kind": "slider",
+        "min": 0.0,
+        "max": 2.0,
+        "step": 1,
+        "default": 1,
+        "scale": "0 none \u00b7 1 one side \u00b7 2 both sides"
+      },
+      {
+        "name": "Character",
+        "kind": "slider",
+        "min": 0.0,
+        "max": 2.0,
+        "step": 1,
+        "default": 1,
+        "scale": "0 none \u00b7 1 throbbing \u00b7 2 constant"
+      },
+      {
+        "name": "Intensity",
+        "kind": "slider",
+        "min": 0.0,
+        "max": 3.0,
+        "step": 1,
+        "default": 3,
+        "scale": "0 none \u00b7 1 mild \u00b7 2 medium \u00b7 3 severe"
+      },
+      {
+        "name": "Visual",
+        "kind": "slider",
+        "min": 0.0,
+        "max": 4.0,
+        "step": 1,
+        "default": 2,
+        "scale": "number of visual symptoms"
+      },
+      {
+        "name": "Sensory",
+        "kind": "slider",
+        "min": 0.0,
+        "max": 2.0,
+        "step": 1,
+        "default": 0,
+        "scale": "number of sensory symptoms"
+      },
+      {
+        "name": "Nausea",
+        "kind": "chip"
+      },
+      {
+        "name": "Vomit",
+        "kind": "chip"
+      },
+      {
+        "name": "Phonophobia",
+        "kind": "chip"
+      },
+      {
+        "name": "Photophobia",
+        "kind": "chip"
+      },
+      {
+        "name": "Dysphasia",
+        "kind": "chip"
+      },
+      {
+        "name": "Dysarthria",
+        "kind": "chip"
+      },
+      {
+        "name": "Vertigo",
+        "kind": "chip"
+      },
+      {
+        "name": "Tinnitus",
+        "kind": "chip"
+      },
+      {
+        "name": "Hypoacusis",
+        "kind": "chip"
+      },
+      {
+        "name": "Diplopia",
+        "kind": "chip"
+      },
+      {
+        "name": "Defect",
+        "kind": "chip"
+      },
+      {
+        "name": "Ataxia",
+        "kind": "chip"
+      },
+      {
+        "name": "Conscience",
+        "kind": "chip"
+      },
+      {
+        "name": "Paresthesia",
+        "kind": "chip"
+      },
+      {
+        "name": "DPF",
+        "kind": "chip"
+      }
+    ],
+    "labels": [
+      "Basilar-type aura",
+      "Familial hemiplegic migraine",
+      "Migraine without aura",
+      "Other",
+      "Sporadic hemiplegic migraine",
+      "Typical aura with migraine",
+      "Typical aura without migraine"
+    ],
+    "best_model": "Random Forest",
+    "best_file": "category_random_forest.joblib",
+    "results": {
+      "Decision Tree": {
+        "accuracy": 0.6835443037974683,
+        "precision": 0.5886863136863136,
+        "recall": 0.7315476190476191,
+        "f1": 0.6125543504114932,
+        "cv_mean": 0.6316455696202532,
+        "cv_std": 0.10379746835443038,
+        "confusion_matrix": [
+          [
+            1,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            12,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0
+          ],
+          [
+            5,
+            5,
+            0,
+            2,
+            7,
+            29,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            4
+          ]
+        ],
+        "per_class": {
+          "Basilar-type aura": {
+            "precision": 0.125,
+            "recall": 0.25,
+            "f1-score": 0.16666666666666666,
+            "support": 4.0
+          },
+          "Familial hemiplegic migraine": {
+            "precision": 0.2727272727272727,
+            "recall": 0.6,
+            "f1-score": 0.375,
+            "support": 5.0
+          },
+          "Migraine without aura": {
+            "precision": 0.9230769230769231,
+            "recall": 1.0,
+            "f1-score": 0.96,
+            "support": 12.0
+          },
+          "Other": {
+            "precision": 0.5,
+            "recall": 0.6666666666666666,
+            "f1-score": 0.5714285714285714,
+            "support": 3.0
+          },
+          "Sporadic hemiplegic migraine": {
+            "precision": 0.3,
+            "recall": 1.0,
+            "f1-score": 0.46153846153846156,
+            "support": 3.0
+          },
+          "Typical aura with migraine": {
+            "precision": 1.0,
+            "recall": 0.6041666666666666,
+            "f1-score": 0.7532467532467533,
+            "support": 48.0
+          },
+          "Typical aura without migraine": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 4.0
+          }
+        }
+      },
+      "Random Forest": {
+        "accuracy": 0.8481012658227848,
+        "precision": 0.7791378192075056,
+        "recall": 0.8095238095238094,
+        "f1": 0.769972924346921,
+        "cv_mean": 0.8679974034404413,
+        "cv_std": 0.029624116027664214,
+        "confusion_matrix": [
+          [
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            5,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            12,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            2,
+            1,
+            0
+          ],
+          [
+            1,
+            4,
+            1,
+            0,
+            2,
+            40,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            4
+          ]
+        ],
+        "per_class": {
+          "Basilar-type aura": {
+            "precision": 0.6666666666666666,
+            "recall": 0.5,
+            "f1-score": 0.5714285714285714,
+            "support": 4.0
+          },
+          "Familial hemiplegic migraine": {
+            "precision": 0.45454545454545453,
+            "recall": 1.0,
+            "f1-score": 0.625,
+            "support": 5.0
+          },
+          "Migraine without aura": {
+            "precision": 0.8571428571428571,
+            "recall": 1.0,
+            "f1-score": 0.9230769230769231,
+            "support": 12.0
+          },
+          "Other": {
+            "precision": 1.0,
+            "recall": 0.6666666666666666,
+            "f1-score": 0.8,
+            "support": 3.0
+          },
+          "Sporadic hemiplegic migraine": {
+            "precision": 0.5,
+            "recall": 0.6666666666666666,
+            "f1-score": 0.5714285714285714,
+            "support": 3.0
+          },
+          "Typical aura with migraine": {
+            "precision": 0.975609756097561,
+            "recall": 0.8333333333333334,
+            "f1-score": 0.898876404494382,
+            "support": 48.0
+          },
+          "Typical aura without migraine": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 4.0
+          }
+        }
+      },
+      "SVM": {
+        "accuracy": 0.7341772151898734,
+        "precision": 0.7076672335600908,
+        "recall": 0.7708333333333333,
+        "f1": 0.6978914977362182,
+        "cv_mean": 0.8274910743265174,
+        "cv_std": 0.03021186591242266,
+        "confusion_matrix": [
+          [
+            3,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            5,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            12,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            1,
+            1,
+            0
+          ],
+          [
+            1,
+            12,
+            1,
+            0,
+            3,
+            31,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            4
+          ]
+        ],
+        "per_class": {
+          "Basilar-type aura": {
+            "precision": 0.6,
+            "recall": 0.75,
+            "f1-score": 0.6666666666666666,
+            "support": 4.0
+          },
+          "Familial hemiplegic migraine": {
+            "precision": 0.2777777777777778,
+            "recall": 1.0,
+            "f1-score": 0.43478260869565216,
+            "support": 5.0
+          },
+          "Migraine without aura": {
+            "precision": 0.8571428571428571,
+            "recall": 1.0,
+            "f1-score": 0.9230769230769231,
+            "support": 12.0
+          },
+          "Other": {
+            "precision": 1.0,
+            "recall": 0.6666666666666666,
+            "f1-score": 0.8,
+            "support": 3.0
+          },
+          "Sporadic hemiplegic migraine": {
+            "precision": 0.25,
+            "recall": 0.3333333333333333,
+            "f1-score": 0.2857142857142857,
+            "support": 3.0
+          },
+          "Typical aura with migraine": {
+            "precision": 0.96875,
+            "recall": 0.6458333333333334,
+            "f1-score": 0.775,
+            "support": 48.0
+          },
+          "Typical aura without migraine": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 4.0
+          }
+        }
+      }
+    },
+    "importance": [
+      {
+        "feature": "Visual",
+        "rf": 0.12206648199827298,
+        "mi": 0.40283971728490076
+      },
+      {
+        "feature": "Age",
+        "rf": 0.11396707578844159,
+        "mi": 0.09094311633805541
+      },
+      {
+        "feature": "Intensity",
+        "rf": 0.09209481527746217,
+        "mi": 0.35967234645297275
+      },
+      {
+        "feature": "Location",
+        "rf": 0.08445701512467801,
+        "mi": 0.2627408312952595
+      },
+      {
+        "feature": "Character",
+        "rf": 0.0797956767037713,
+        "mi": 0.3079428746197246
+      },
+      {
+        "feature": "DPF",
+        "rf": 0.07845654514258914,
+        "mi": 0.08974872490422836
+      },
+      {
+        "feature": "Vertigo",
+        "rf": 0.057593189238944874,
+        "mi": 0.1264412729606308
+      },
+      {
+        "feature": "Frequency",
+        "rf": 0.05567037509210361,
+        "mi": 0.13584967352950272
+      },
+      {
+        "feature": "Phonophobia",
+        "rf": 0.03969989172576825,
+        "mi": 0.06698109206239122
+      },
+      {
+        "feature": "Photophobia",
+        "rf": 0.03627594139625935,
+        "mi": 0.05100715371069642
+      },
+      {
+        "feature": "Dysphasia",
+        "rf": 0.035542836101755154,
+        "mi": 0.08896877502682488
+      },
+      {
+        "feature": "Sensory",
+        "rf": 0.03548863840903532,
+        "mi": 0.06728291461819991
+      },
+      {
+        "feature": "Hypoacusis",
+        "rf": 0.030925236140184564,
+        "mi": 0.05515610832280471
+      },
+      {
+        "feature": "Tinnitus",
+        "rf": 0.02573078340188443,
+        "mi": 0.031010779601701177
+      },
+      {
+        "feature": "Defect",
+        "rf": 0.025577556809820948,
+        "mi": 0.07795665275462227
+      },
+      {
+        "feature": "Duration",
+        "rf": 0.02492340706663871,
+        "mi": 0.036446708318265575
+      },
+      {
+        "feature": "Vomit",
+        "rf": 0.018472464537577827,
+        "mi": 0.09712723208409324
+      },
+      {
+        "feature": "Conscience",
+        "rf": 0.01751747080170224,
+        "mi": 0.006029272725148527
+      },
+      {
+        "feature": "Nausea",
+        "rf": 0.0130675686692875,
+        "mi": 0.0
+      },
+      {
+        "feature": "Diplopia",
+        "rf": 0.005407058670699731,
+        "mi": 0.0
+      },
+      {
+        "feature": "Paresthesia",
+        "rf": 0.004809092129824326,
+        "mi": 0.0
+      },
+      {
+        "feature": "Dysarthria",
+        "rf": 0.002460879773298133,
+        "mi": 0.0
+      },
+      {
+        "feature": "Ataxia",
+        "rf": 0.0,
+        "mi": 0.0
+      }
+    ],
+    "preprocessing": {
+      "raw_rows": 400,
+      "duplicates_removed": 6,
+      "invalid_removed": 0,
+      "missing_filled": 0,
+      "small_classes_removed": [],
+      "clean_rows": 394,
+      "ignored_columns": []
+    },
+    "cv_folds": 5,
+    "train_rows": 315,
+    "test_rows": 79,
+    "class_counts": {
+      "Typical aura with migraine": 241,
+      "Migraine without aura": 60,
+      "Familial hemiplegic migraine": 24,
+      "Typical aura without migraine": 20,
+      "Basilar-type aura": 18,
+      "Other": 17,
+      "Sporadic hemiplegic migraine": 14
+    },
+    "numeric_summary": {
+      "Age": {
+        "min": 15.0,
+        "max": 77.0,
+        "mean": 31.695431472081218
+      },
+      "Duration": {
+        "min": 1.0,
+        "max": 3.0,
+        "mean": 1.619289340101523
+      },
+      "Frequency": {
+        "min": 1.0,
+        "max": 8.0,
+        "mean": 2.3654822335025383
+      },
+      "Location": {
+        "min": 0.0,
+        "max": 2.0,
+        "mean": 0.9720812182741116
+      },
+      "Character": {
+        "min": 0.0,
+        "max": 2.0,
+        "mean": 0.9771573604060914
+      },
+      "Intensity": {
+        "min": 0.0,
+        "max": 3.0,
+        "mean": 2.472081218274112
+      },
+      "Visual": {
+        "min": 0.0,
+        "max": 4.0,
+        "mean": 1.482233502538071
+      },
+      "Sensory": {
+        "min": 0.0,
+        "max": 2.0,
+        "mean": 0.30710659898477155
+      }
+    },
+    "sample": [
+      {
+        "Age": 30.0,
+        "Duration": 1.0,
+        "Frequency": 5.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 2.0,
+        "Nausea": 1.0,
+        "Vomit": 0.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 1.0,
+        "Sensory": 2.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 0.0,
+        "Tinnitus": 0.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 0.0,
+        "Type": "Typical aura with migraine"
+      },
+      {
+        "Age": 50.0,
+        "Duration": 3.0,
+        "Frequency": 5.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 3.0,
+        "Nausea": 1.0,
+        "Vomit": 1.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 2.0,
+        "Sensory": 1.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 1.0,
+        "Tinnitus": 0.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 0.0,
+        "Type": "Typical aura with migraine"
+      },
+      {
+        "Age": 53.0,
+        "Duration": 2.0,
+        "Frequency": 1.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 2.0,
+        "Nausea": 1.0,
+        "Vomit": 1.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 2.0,
+        "Sensory": 0.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 0.0,
+        "Tinnitus": 0.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 0.0,
+        "Type": "Typical aura with migraine"
+      },
+      {
+        "Age": 45.0,
+        "Duration": 3.0,
+        "Frequency": 5.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 3.0,
+        "Nausea": 1.0,
+        "Vomit": 0.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 2.0,
+        "Sensory": 2.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 1.0,
+        "Tinnitus": 0.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 0.0,
+        "Type": "Typical aura with migraine"
+      },
+      {
+        "Age": 53.0,
+        "Duration": 1.0,
+        "Frequency": 1.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 2.0,
+        "Nausea": 1.0,
+        "Vomit": 0.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 4.0,
+        "Sensory": 0.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 0.0,
+        "Tinnitus": 0.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 1.0,
+        "Type": "Typical aura with migraine"
+      },
+      {
+        "Age": 49.0,
+        "Duration": 1.0,
+        "Frequency": 1.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 3.0,
+        "Nausea": 1.0,
+        "Vomit": 0.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 0.0,
+        "Sensory": 0.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 0.0,
+        "Tinnitus": 0.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 0.0,
+        "Type": "Migraine without aura"
+      },
+      {
+        "Age": 27.0,
+        "Duration": 1.0,
+        "Frequency": 5.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 3.0,
+        "Nausea": 1.0,
+        "Vomit": 0.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 2.0,
+        "Sensory": 0.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 1.0,
+        "Tinnitus": 1.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 0.0,
+        "Type": "Basilar-type aura"
+      },
+      {
+        "Age": 24.0,
+        "Duration": 1.0,
+        "Frequency": 1.0,
+        "Location": 1.0,
+        "Character": 1.0,
+        "Intensity": 2.0,
+        "Nausea": 1.0,
+        "Vomit": 0.0,
+        "Phonophobia": 1.0,
+        "Photophobia": 1.0,
+        "Visual": 2.0,
+        "Sensory": 2.0,
+        "Dysphasia": 0.0,
+        "Dysarthria": 0.0,
+        "Vertigo": 1.0,
+        "Tinnitus": 0.0,
+        "Hypoacusis": 0.0,
+        "Diplopia": 0.0,
+        "Defect": 0.0,
+        "Ataxia": 0.0,
+        "Conscience": 0.0,
+        "Paresthesia": 0.0,
+        "DPF": 1.0,
+        "Type": "Typical aura with migraine"
+      }
+    ]
+  }
+}

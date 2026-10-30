@@ -1,0 +1,147 @@
+{# Step 1 (step == "screening") and step 2 (step == "category") share this page. #}
+{% extends "base.html" %}
+{% set s1 = step == "screening" %}
+{% set fid = "screen-form" if s1 else "category-form" %}
+{% block title %}{{ "Check for migraine" if s1 else "Migraine category" }} · Migraine Prediction System{% endblock %}
+{% block content %}
+{% if not s1 and has_screening %}
+<div class="steps">
+  <a class="step " href="{{ url_for('screening') }}"><span>1</span>Do you have migraine?</a>
+  <i class="step-sep"></i>
+  <a class="step on" href="{{ url_for('category') }}"><span>2</span>Which migraine category?</a>
+</div>
+{% endif %}
+<div class="grid">
+  <form class="card" id="{{ fid }}" onsubmit="return false">
+    <h2>{{ "Do you have migraine?" if s1 else "Describe the attack" }}</h2>
+    {% if s1 %}<p class="lead">Describe your usual headache. The model checks whether it matches a migraine pattern.</p>{% endif %}
+    {% for i in inputs if i.kind == "slider" %}
+    <div class="field">
+      <div class="field-top">
+        <label for="{{ fid }}-{{ i.name }}">{{ i.label or labels[i.name] }}</label>
+        <output for="{{ fid }}-{{ i.name }}"></output>
+      </div>
+      <input type="range" id="{{ fid }}-{{ i.name }}" name="{{ i.name }}" min="{{ '%g' % i.min }}" max="{{ '%g' % i.max }}"
+             step="{{ '%g' % i.step }}" value="{{ prefill.get(i.name, '%g' % i.default) }}">
+      {% if i.scale %}<small class="scale">{{ i.scale }}</small>{% endif %}
+    </div>
+    {% endfor %}
+
+    <h3>Symptoms you notice</h3>
+    <div class="chips">
+      {% for i in inputs if i.kind == "chip" %}
+      <button type="button" class="chip" data-name="{{ i.name }}"
+              aria-pressed="{{ 'true' if prefill.get(i.name) == '1' else 'false' }}">{{ i.label or labels[i.name] }}</button>
+      {% endfor %}
+    </div>
+
+    {# step 1 answers that step 2 does not ask travel as hidden fields #}
+    {% for name, value in carried.items() %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}
+
+    <button type="submit" class="btn">{{ "Check for migraine" if s1 else "Predict category" }}</button>
+  </form>
+
+  <section class="card result"{% if s1 %} id="result"{% endif %} aria-live="polite">
+    <div id="placeholder">
+      <div class="empty">
+        <svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true">
+          <circle cx="60" cy="60" r="46" fill="none" stroke="#1c1a3a" stroke-width="16" stroke-dasharray="6 10"/>
+        </svg>
+        <b style="color:var(--ink);font-family:var(--head);font-size:20px">No prediction yet</b>
+        <span>{{ "Fill in your headache details and press “Check for migraine”." if s1 else "Describe the attack and press “Predict category”." }}</span>
+      </div>
+    </div>
+    <div id="output" hidden>
+      <div class="donut-wrap">
+        <svg viewBox="0 0 360 360" id="donut"></svg>
+        <div class="donut-center">
+          <small>{{ "Screening result" if s1 else "Most likely" }}</small>
+          <strong id="top-label"></strong>
+          <em id="top-value"></em>
+        </div>
+      </div>
+      <div class="bars" id="bars"></div>
+      {% if s1 %}
+      <div class="verdict" id="verdict"></div>
+      {% if has_category %}<a class="btn secondary" id="next-btn" href="#">Find my migraine category →</a>{% endif %}
+      {% endif %}
+      <p class="foot" id="foot"></p>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% if s1 %}
+<script>
+  const form = document.getElementById("screen-form");
+  initForm(form);
+  const COLORS = { "Migraine": "#d63a92", "No migraine": "#1fa896" };
+
+  form.addEventListener("submit", async () => {
+    const data = readForm(form);
+    const res = await predict("screening", data);
+    const items = ["Migraine", "No migraine"].map((label) => ({
+      label, color: COLORS[label],
+      value: res.probabilities.find((p) => p.label === label).value,
+    }));
+    const yes = res.label === "Migraine";
+
+    document.getElementById("placeholder").hidden = true;
+    document.getElementById("output").hidden = false;
+    renderDonut(document.getElementById("donut"), items);
+    renderBars(document.getElementById("bars"), items.map((i) => ({ ...i, label: i.label === "Migraine" ? "Migraine pattern" : "No migraine pattern" })));
+    document.getElementById("top-label").textContent = yes ? "Migraine likely" : "Migraine unlikely";
+    const val = document.getElementById("top-value");
+    val.textContent = res.confidence.toFixed(1) + "%";
+    val.style.color = COLORS[res.label];
+
+    document.getElementById("verdict").innerHTML = yes
+      ? `<b>Your headache matches a migraine pattern.</b>${document.getElementById('next-btn') ? 'Go to step 2 to see which type of migraine it is closest to. Your answers are carried over.' : 'Please talk to a doctor for a proper diagnosis.'}`
+      : `<b>Your headache does not look like migraine.</b>It may be closer to a tension-type or another kind of headache. If headaches are frequent or severe, please see a doctor.`;
+
+    // carry the answers to step 2
+    const next = document.getElementById("next-btn");
+    if (next) {
+      next.href = "/category?" + new URLSearchParams(data).toString();
+      next.textContent = yes ? "Find my migraine category →" : "Check the category anyway →";
+      next.className = yes ? "btn secondary" : "btn ghost";
+    }
+    document.getElementById("foot").textContent = `Predicted with the best-performing model: ${res.model}.`;
+  });
+</script>
+{% else %}
+<script>
+  const form = document.getElementById("category-form");
+  initForm(form);
+  // known categories keep the colours from the design; any others get the next free colour
+  const KNOWN = {
+    "Migraine without aura": "#2f6fe8", "Migraine with aura": "#d63a92",
+    "Chronic migraine": "#f08c28", "Other": "#1fa896",
+  };
+  const EXTRA = ["#8a4fc0", "#e0b020", "#5a6b8c", "#c0562f", "#3fa0c8"];
+
+  async function run() {
+    const res = await predict("category", readForm(form));
+    let next = 0;
+    const known = Object.keys(KNOWN);
+    const items = [...res.probabilities]
+      .sort((a, b) => (known.indexOf(a.label) + 1 || 99) - (known.indexOf(b.label) + 1 || 99))
+      .map((p) => ({ ...p, color: KNOWN[p.label] || EXTRA[next++ % EXTRA.length] }));
+    document.getElementById("placeholder").hidden = true;
+    document.getElementById("output").hidden = false;
+    renderDonut(document.getElementById("donut"), items);
+    renderBars(document.getElementById("bars"), items);
+    document.getElementById("top-label").textContent = res.label;
+    const val = document.getElementById("top-value");
+    val.textContent = res.confidence.toFixed(1) + "%";
+    val.style.color = items.find((i) => i.label === res.label).color;
+    document.getElementById("foot").textContent = `Predicted with the best-performing model: ${res.model}.`;
+  }
+
+  form.addEventListener("submit", run);
+  // coming from step 1 with answers already filled in: predict straight away
+  if (location.search) run();
+</script>
+{% endif %}
+{% endblock %}
